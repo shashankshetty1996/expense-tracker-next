@@ -32,9 +32,11 @@ const useDarkMode = (): [isDarkTheme: boolean, toggleTheme: () => void] => {
   }, []);
 
   useUpdateEffect(() => {
-    const root = window.document.documentElement;
-
+    // Setting preference in local storage
     localStorage.setItem(LOCAL_STORAGE_KEY, `${isDarkTheme}`);
+
+    // Root element on which tailwind will be adding class for dark mode.
+    const root = window.document.documentElement;
 
     if (isDarkTheme) {
       root.classList.remove('light');
