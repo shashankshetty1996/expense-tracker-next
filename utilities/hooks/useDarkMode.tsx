@@ -1,24 +1,40 @@
 import { useEffect, useState } from 'react';
+import { useUpdateEffect } from '../hooks';
 
+const LOCAL_STORAGE_KEY = 'theme';
 const useDarkMode = (): [isDarkTheme: boolean, toggleTheme: () => void] => {
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
 
   const toggleTheme = () => setIsDarkTheme(prev => !prev);
 
-  useEffect(() => {
+  const defaultTheme = () => {
     if (typeof window === undefined) {
       throw new Error('Invalid usage, should be used in client only');
-    } else {
-      let matched =
-        window?.matchMedia('(prefers-color-scheme: dark)')?.matches ?? false;
-      if (isDarkTheme !== matched) {
-        setIsDarkTheme(matched);
-      }
     }
-  }, []);
+
+    // Check for theme set previously
+    const theme = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (theme) {
+      setIsDarkTheme(theme === 'true');
+      return;
+    }
+
+    // Check system configuration
+    let matched =
+      window?.matchMedia('(prefers-color-scheme: dark)')?.matches ?? false;
+    if (isDarkTheme !== matched) {
+      setIsDarkTheme(matched);
+    }
+  };
 
   useEffect(() => {
+    defaultTheme();
+  }, []);
+
+  useUpdateEffect(() => {
     const root = window.document.documentElement;
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, `${isDarkTheme}`);
 
     if (isDarkTheme) {
       root.classList.remove('light');
