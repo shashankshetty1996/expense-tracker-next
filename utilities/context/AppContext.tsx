@@ -2,7 +2,6 @@ import { createContext } from 'react';
 import { useDarkMode } from '../hooks';
 
 interface IAppContext {
-  isDarkTheme: boolean;
   toggleTheme: () => void;
 }
 
@@ -13,9 +12,9 @@ interface IAppContextProvider {
 }
 
 export function AppContextProvider(props: IAppContextProvider) {
-  const [isDarkTheme, toggleTheme] = useDarkMode();
+  const toggleTheme = useDarkMode();
   return (
-    <AppContext.Provider value={{ isDarkTheme, toggleTheme }}>
+    <AppContext.Provider value={{ toggleTheme }}>
       {props.children}
     </AppContext.Provider>
   );

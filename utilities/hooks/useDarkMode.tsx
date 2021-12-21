@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useTheme } from 'next-themes';
+import { useEffect } from 'react';
 import { useUpdateEffect } from '../hooks';
 
 const LOCAL_STORAGE_KEY = 'theme';
-const useDarkMode = (): [isDarkTheme: boolean, toggleTheme: () => void] => {
-  const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+const useDarkMode = (): (() => void) => {
+  // const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
+  const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => setIsDarkTheme(prev => !prev);
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
   const defaultTheme = () => {
     if (typeof window === undefined) {
@@ -13,17 +15,18 @@ const useDarkMode = (): [isDarkTheme: boolean, toggleTheme: () => void] => {
     }
 
     // Check for theme set previously
-    const theme = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (theme) {
-      setIsDarkTheme(theme === 'true');
+    const storedTheme = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (storedTheme) {
+      setTheme(storedTheme);
       return;
     }
 
     // Check system configuration
     let matched =
       window?.matchMedia('(prefers-color-scheme: dark)')?.matches ?? false;
-    if (isDarkTheme !== matched) {
-      setIsDarkTheme(matched);
+    if ((matched && theme === 'light') || (!matched && theme === 'dark')) {
+      toggleTheme();
+      return;
     }
   };
 
@@ -33,21 +36,10 @@ const useDarkMode = (): [isDarkTheme: boolean, toggleTheme: () => void] => {
 
   useUpdateEffect(() => {
     // Setting preference in local storage
-    localStorage.setItem(LOCAL_STORAGE_KEY, `${isDarkTheme}`);
+    localStorage.setItem(LOCAL_STORAGE_KEY, theme);
+  }, [theme]);
 
-    // Root element on which tailwind will be adding class for dark mode.
-    const root = window.document.documentElement;
-
-    if (isDarkTheme) {
-      root.classList.remove('light');
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-      root.classList.add('light');
-    }
-  }, [isDarkTheme]);
-
-  return [isDarkTheme, toggleTheme];
+  return toggleTheme;
 };
 
 export default useDarkMode;

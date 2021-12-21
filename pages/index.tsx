@@ -4,7 +4,7 @@ import { AppContextProvider } from '../utilities/context';
 
 export default function Home() {
   return (
-    <div className="min-h-screen dark:bg-slate-800">
+    <div className="min-h-screen dark:bg-gray-800">
       <Head>
         <title>Expense Tracker</title>
         <link rel="icon" href="/favicon.ico" />

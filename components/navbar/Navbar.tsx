@@ -10,7 +10,7 @@ const navItems: INavItem[] = [
 
 function Navbar() {
   return (
-    <header className="bg-teal-700 dark:bg-slate-700 text-white w-full shadow-lg rounded-b h-14 px-8 md:px-16 mb-4">
+    <header className="bg-teal-700 dark:bg-gray-700 text-white w-full shadow-lg rounded-b h-14 px-8 md:px-16 mb-4">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl md:text-3xl">Expense Tracker</h1>
         <nav>
@@ -18,7 +18,7 @@ function Navbar() {
             {navItems.map((nav, index) => (
               <li
                 key={index}
-                className="cursor-pointer text-sm hover:bg-teal-900 dark:hover:bg-slate-800"
+                className="cursor-pointer text-sm hover:bg-teal-900 dark:hover:bg-gray-800"
               >
                 <Link key={index} href={nav.to}>
                   <a className="block px-2 md:px-4 py-4 mx-0.5 h-14">

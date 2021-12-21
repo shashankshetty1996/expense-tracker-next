@@ -13,7 +13,7 @@ function DarkThemeToggle() {
     <div onClick={handleToggleClick}>
       <label
         htmlFor="toggle"
-        className="w-12 h-6 bg-amber-400 dark:bg-stone-900 flex items-center justify-between rounded-full p-1 relative scale-105 cursor-pointer"
+        className="w-12 h-6 bg-amber-400 dark:bg-gray-900 flex items-center justify-between rounded-full p-1 relative scale-105 cursor-pointer"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
