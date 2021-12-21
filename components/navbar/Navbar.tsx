@@ -37,7 +37,7 @@ function Navbar() {
   );
 
   return (
-    <header className="bg-teal-700 dark:bg-gray-700 text-white w-full shadow-lg rounded-b h-14 px-8 md:px-16 mb-4">
+    <header className="bg-teal-700 dark:bg-gray-700 text-white w-full shadow-lg rounded-b h-14 px-8 md:px-0">
       <div className="container mx-auto flex justify-between items-center h-full">
         <h1 className="text-xl md:text-3xl">Expense Tracker</h1>
         <nav className="hidden md:block">{navTabs}</nav>

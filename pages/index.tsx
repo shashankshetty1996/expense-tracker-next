@@ -12,9 +12,9 @@ export default function Home() {
 
       <AppContextProvider>
         <Navbar />
-        <main className="container">
-          <h1 className="text-4xl text-center text-teal-700 dark:text-slate-100">
-            Hey, from Expenses Tracker
+        <main className="container mx-auto">
+          <h1 className="text-2xl md:text-4xl text-center text-teal-700 dark:text-slate-100 mt-4">
+            Welcome to Expenses Tracker
           </h1>
         </main>
       </AppContextProvider>
