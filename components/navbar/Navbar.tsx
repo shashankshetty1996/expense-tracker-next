@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 
 import DarkThemeToggle from './darkThemeToggle/DarkThemeToggle';
 import { INavItem } from '../../utilities/interfaces';
+import { useOutsideClick } from '../../utilities/hooks';
 import { Backdrop } from '../../components';
 
 const navItems: INavItem[] = [
@@ -12,8 +13,10 @@ const navItems: INavItem[] = [
 
 function Navbar() {
   const [openSideDrawer, setOpenSideDrawer] = useState<boolean>(false);
-
   const toggleSideDrawer = () => setOpenSideDrawer(old => !old);
+
+  const sideNavRef = useRef<HTMLElement>(null);
+  useOutsideClick(sideNavRef, toggleSideDrawer, openSideDrawer);
 
   const navTabs = (
     <ul className="flex flex-col md:flex-row items-center justify-center">
@@ -60,7 +63,10 @@ function Navbar() {
       {openSideDrawer && (
         <>
           <Backdrop className="md:hidden" />
-          <aside className="absolute right-0 top-0 w-3/4 h-screen bg-teal-700 dark:bg-gray-700 z-40 shadow-md rounded md:hidden">
+          <aside
+            ref={sideNavRef}
+            className="absolute right-0 top-0 w-3/4 h-screen bg-teal-700 dark:bg-gray-700 z-40 shadow-md rounded md:hidden"
+          >
             <div className="flex items-center justify-end h-14 px-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
