@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -15,6 +15,10 @@ function Navbar() {
   const { route } = useRouter();
   const [openSideDrawer, setOpenSideDrawer] = useState<boolean>(false);
   const toggleSideDrawer = () => setOpenSideDrawer(old => !old);
+
+  // useEffect(() => {
+  //   setOpenSideDrawer(false);
+  // }, [route]);
 
   const navTabs = (
     <ul className="flex flex-col md:flex-row items-center justify-center">
@@ -50,7 +54,10 @@ function Navbar() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          onClick={toggleSideDrawer}
+          onClick={() => {
+            console.log('side drawer');
+            toggleSideDrawer();
+          }}
         >
           <path
             strokeLinecap="round"

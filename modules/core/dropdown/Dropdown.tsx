@@ -54,10 +54,10 @@ function Dropdown(props: IDropdown) {
         </svg>
       </div>
       <ul
-        className={`absolute w-full list-none p-0 bg-white dark:bg-stone-900 ease-in transition-all duration-200 shadow-xl rounded-lg mt-1 ${
+        className={`absolute w-full list-none p-0 bg-white dark:bg-stone-900 ease-in transition-all duration-100 shadow-xl rounded-lg mt-1 ${
           open
-            ? 'opacity-100 delay-200 z-30'
-            : 'opacity-0 h-0 translate-y-full -z-30'
+            ? 'opacity-100 delay-200 z-10'
+            : 'opacity-0 h-0 translate-y-2 -z-10'
         }`}
       >
         {options.map(option => {

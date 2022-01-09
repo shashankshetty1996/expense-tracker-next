@@ -14,16 +14,17 @@ function SideNav(props: ISideNav) {
   const sideNavRef = useRef<HTMLElement>(null);
   useOutsideClick(sideNavRef, toggleSideDrawer, show);
 
-  if (!show) {
-    return null;
-  }
-
+  console.log({ show });
   return (
-    <>
-      <Backdrop className="md:hidden" />
+    <div
+      className={`fixed top-0 right-0 h-screen w-screen ${show ? '' : '-z-50'}`}
+    >
+      <Backdrop className={show ? 'md:opacity-0' : 'opacity-100'} />
       <aside
         ref={sideNavRef}
-        className="absolute right-0 top-0 w-3/4 h-screen bg-teal-700 dark:bg-gray-700 z-40 shadow-md rounded md:hidden"
+        className={`z-50 absolute right-0 top-0 w-3/4 h-screen bg-teal-700 dark:bg-gray-700 shadow-md rounded transition-all ease-in-out duration-300 md:hidden ${
+          show ? 'delay-100' : 'translate-x-full'
+        }`}
       >
         <div className="flex items-center justify-end h-14 px-4">
           <svg
@@ -44,7 +45,7 @@ function SideNav(props: ISideNav) {
         </div>
         {navTabs}
       </aside>
-    </>
+    </div>
   );
 }
 
