@@ -1,0 +1,7 @@
+export enum TransactionType {
+  FIXED_INCOME,
+  VARIABLE_INCOME,
+  FIXED_EXPENSE,
+  DAILY_EXPENSE,
+  VARIABLE_EXPENSE
+}

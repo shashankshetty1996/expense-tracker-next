@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider attribute="class">
         <AppContextProvider>
-          <div className="min-h-screen dark:bg-gray-800">
+          <div className="min-h-screen bg-teal-50 dark:bg-gray-800">
             <Component {...pageProps} />
           </div>
         </AppContextProvider>
