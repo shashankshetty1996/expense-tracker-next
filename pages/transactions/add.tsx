@@ -37,6 +37,7 @@ const fields = {
 };
 
 const defaultValue = {
+  [fields.amount.key]: 0,
   [fields.type.key]: TransactionType.VARIABLE_EXPENSE,
   [fields.note.key]: ''
 };
@@ -45,11 +46,33 @@ export default function AddTransition() {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm();
+
+  const resetForm = data => {
+    const res = {};
+    for (let key in data) {
+      const initialValue = defaultValue[key];
+      if (initialValue !== undefined) {
+        res[key] = initialValue;
+        continue;
+      }
+      const value = data[key];
+      if (typeof value === 'string') {
+        res[key] = '';
+      } else if (typeof value === 'number') {
+        res[key] = 0;
+      } else {
+        res[key] = undefined;
+      }
+    }
+    reset(res);
+  };
 
   const onSubmit = data => {
     console.log(data);
+    resetForm(data);
   };
 
   return (
@@ -73,6 +96,7 @@ export default function AddTransition() {
               name={fields.amount.key}
               control={control}
               isRequired={fields.amount.isRequired}
+              defaultValue={defaultValue[fields.amount.key]}
             />
           </FormElement>
           <FormElement

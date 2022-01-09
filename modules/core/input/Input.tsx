@@ -10,7 +10,7 @@ interface CommonInputProps {
 }
 interface InputProps extends CommonInputProps {
   value: ValueType;
-  onChange: (v: string) => void;
+  onChange: (v: ValueType) => void;
 }
 
 interface ControlledInputProps extends CommonInputProps {
@@ -28,10 +28,14 @@ function InputComp(props: InputProps, ref) {
 
   const changeHandler = $event => {
     const { value: updatedValue } = $event.target;
-    if (type === 'number' && isNaN(updatedValue)) {
-      return;
+    if (type === 'number') {
+      if (isNaN(+updatedValue)) {
+        return;
+      }
+      onChange(+updatedValue);
+    } else {
+      onChange(updatedValue);
     }
-    onChange(updatedValue);
   };
 
   return (
@@ -55,6 +59,7 @@ function ControlledInput(props: ControlledInputProps) {
     defaultValue,
     isRequired,
     customValidator,
+    type = 'text',
     ...rest
   } = props;
 
@@ -64,6 +69,12 @@ function ControlledInput(props: ControlledInputProps) {
       message: 'This field is required'
     }
   };
+  if (type === 'number') {
+    validations.valueAsNumber = {
+      value: true,
+      message: 'Value should be number only'
+    };
+  }
   // const { min, max } = rest;
   // if (min != null) {
   //   validations.min = {
@@ -109,7 +120,9 @@ function ControlledInput(props: ControlledInputProps) {
     rules: validations
   });
 
-  return <Input ref={ref} value={value} onChange={onChange} {...rest} />;
+  return (
+    <Input ref={ref} value={value} onChange={onChange} type={type} {...rest} />
+  );
 }
 
 export { ControlledInput };
