@@ -1,8 +1,13 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Navbar } from '../../modules/components';
-import { Button, Dropdown, FormElement, Input } from '../../modules/core';
+import {
+  Button,
+  FormElement,
+  ControlledInput,
+  ControlledDropdown
+} from '../../modules/core';
 import { TransactionType } from '../../utilities/enums';
 
 const transactionTypeOptions = [
@@ -13,16 +18,38 @@ const transactionTypeOptions = [
   { label: 'Variable Expense', value: TransactionType.VARIABLE_EXPENSE }
 ];
 
-export default function AddTransition() {
-  const [amount, setAmount] = useState<number>();
-  const [type, setType] = useState<TransactionType>(
-    TransactionType.VARIABLE_EXPENSE
-  );
-  const [note, setNote] = useState<string>('');
+const fields = {
+  amount: {
+    key: 'amount',
+    label: 'Amount',
+    isRequired: true
+  },
+  type: {
+    key: 'type',
+    label: 'Type',
+    isRequired: true
+  },
+  note: {
+    key: 'note',
+    label: 'Note',
+    isRequired: false
+  }
+};
 
-  const onSubmit = e => {
-    e.preventDefault();
-    console.log({ amount, type, note });
+const defaultValue = {
+  [fields.type.key]: TransactionType.VARIABLE_EXPENSE,
+  [fields.note.key]: ''
+};
+
+export default function AddTransition() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+
+  const onSubmit = data => {
+    console.log(data);
   };
 
   return (
@@ -36,25 +63,44 @@ export default function AddTransition() {
           Add Transactions
         </h1>
         <form className="flex flex-col md:flex-row justify-between items-center my-6 mx-4 md:mx-0">
-          <FormElement label="Amount" isRequired>
-            <Input
+          <FormElement
+            label={fields.amount.label}
+            isRequired={fields.amount.isRequired}
+            error={errors[fields.amount.key]?.message}
+          >
+            <ControlledInput
               type="number"
-              value={amount}
-              onChange={value => setAmount(+value)}
+              name={fields.amount.key}
+              control={control}
+              isRequired={fields.amount.isRequired}
             />
           </FormElement>
-          <FormElement label="Type" isRequired>
-            <Dropdown
-              value={type}
+          <FormElement
+            label={fields.type.label}
+            isRequired={fields.type.isRequired}
+            error={errors[fields.type.key]?.message}
+          >
+            <ControlledDropdown
+              name={fields.type.key}
+              control={control}
               options={transactionTypeOptions}
-              onChange={setType}
+              defaultValue={defaultValue[fields.type.key]}
+              isRequired={fields.type.isRequired}
             />
           </FormElement>
-          <FormElement label="Note">
-            <Input value={note} onChange={setNote} />
+          <FormElement
+            label={fields.note.label}
+            isRequired={fields.note.isRequired}
+            error={errors[fields.note.key]?.message}
+          >
+            <ControlledInput
+              name={fields.note.key}
+              control={control}
+              defaultValue={defaultValue[fields.note.key]}
+            />
           </FormElement>
           <FormElement>
-            <Button className="w-full" onClick={onSubmit}>
+            <Button className="w-full" onClick={handleSubmit(onSubmit)}>
               Add Transaction
             </Button>
           </FormElement>

@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, forwardRef } from 'react';
+import { Control, useController } from 'react-hook-form';
 import { useOutsideClick } from '../../../utilities/hooks';
 
 interface DropdownOption {
@@ -6,13 +7,23 @@ interface DropdownOption {
   value: any;
 }
 
-interface IDropdown {
-  value: any;
+interface CommonDropdownProps {
   options: DropdownOption[];
+}
+interface DropdownProps extends CommonDropdownProps {
+  value: any;
   onChange: (value: any) => void;
 }
 
-function Dropdown(props: IDropdown) {
+interface ControlledDropdownProps extends CommonDropdownProps {
+  name: string;
+  control: Control;
+  defaultValue?: any;
+  isRequired?: boolean;
+  customValidator?: (value: any) => boolean | string;
+}
+
+function DropdownComp(props: DropdownProps, ref) {
   const { options, value, onChange } = props;
   const [open, setOpen] = useState<boolean>(false);
   const closeDropdown = () => setOpen(false);
@@ -20,7 +31,10 @@ function Dropdown(props: IDropdown) {
   const containerRef = useRef<HTMLDivElement>(null);
   useOutsideClick(containerRef, closeDropdown, open);
 
-  const selectedOption = options.find(option => option.value === value);
+  const selectedOption = options.find(option => option.value === value) ?? {
+    label: '',
+    value: ''
+  };
 
   const onItemSelect = (option: DropdownOption) => {
     if (open) {
@@ -34,6 +48,7 @@ function Dropdown(props: IDropdown) {
       <div
         className="flex justify-between items-center rounded p-2 shadow-md bg-white dark:bg-stone-600"
         onClick={() => setOpen(c => !c)}
+        ref={ref}
       >
         <span className="text-base">{selectedOption.label}</span>
         <svg
@@ -78,5 +93,42 @@ function Dropdown(props: IDropdown) {
     </div>
   );
 }
+
+const Dropdown = forwardRef(DropdownComp);
+
+function ControlledDropdown(props: ControlledDropdownProps) {
+  const {
+    name,
+    control,
+    defaultValue,
+    isRequired,
+    customValidator,
+    ...rest
+  } = props;
+
+  const validations: any = {
+    required: {
+      value: isRequired,
+      message: 'This field is required'
+    }
+  };
+
+  if (typeof customValidator === 'function') {
+    validations.validate = customValidator;
+  }
+
+  const {
+    field: { ref, value, onChange }
+  } = useController({
+    name,
+    control,
+    defaultValue,
+    rules: validations
+  });
+
+  return <Dropdown ref={ref} value={value} onChange={onChange} {...rest} />;
+}
+
+export { ControlledDropdown };
 
 export default Dropdown;

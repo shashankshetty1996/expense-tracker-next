@@ -14,7 +14,6 @@ function SideNav(props: ISideNav) {
   const sideNavRef = useRef<HTMLElement>(null);
   useOutsideClick(sideNavRef, toggleSideDrawer, show);
 
-  console.log({ show });
   return (
     <div
       className={`fixed top-0 right-0 h-screen w-screen ${show ? '' : '-z-50'}`}
