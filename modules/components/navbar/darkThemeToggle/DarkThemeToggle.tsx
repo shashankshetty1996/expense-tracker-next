@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppContext } from '../../../utilities/context';
+import { AppContext } from '../../../../utilities/context';
 
 function DarkThemeToggle() {
   const { toggleTheme } = useContext(AppContext);

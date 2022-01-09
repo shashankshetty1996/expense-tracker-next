@@ -1,4 +1,4 @@
-import { Backdrop } from '../../components';
+import { Backdrop } from '..';
 
 function Loader() {
   return (
