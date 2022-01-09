@@ -54,10 +54,7 @@ function Navbar() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          onClick={() => {
-            console.log('side drawer');
-            toggleSideDrawer();
-          }}
+          onClick={toggleSideDrawer}
         >
           <path
             strokeLinecap="round"

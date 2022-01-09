@@ -69,12 +69,6 @@ function ControlledInput(props: ControlledInputProps) {
       message: 'This field is required'
     }
   };
-  if (type === 'number') {
-    validations.valueAsNumber = {
-      value: true,
-      message: 'Value should be number only'
-    };
-  }
   // const { min, max } = rest;
   // if (min != null) {
   //   validations.min = {

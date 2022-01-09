@@ -67,6 +67,7 @@ export default function AddTransition() {
         res[key] = undefined;
       }
     }
+    console.log({ data, res });
     reset(res);
   };
 
