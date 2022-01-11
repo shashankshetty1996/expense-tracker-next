@@ -9,7 +9,7 @@ function FormElement(props: IFormElement) {
   const { children, label = '', error = '', isRequired = false } = props;
   return (
     <div className="my-2 w-64">
-      <div className="relative pb-1">
+      <div className="pb-1">
         {label !== '' && <label className="text-xs">{label}</label>}
         {isRequired && <span className="text-red-600 m-1">*</span>}
       </div>

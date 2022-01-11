@@ -16,7 +16,9 @@ function SideNav(props: ISideNav) {
 
   return (
     <div
-      className={`fixed top-0 right-0 h-screen w-screen ${show ? '' : '-z-50'}`}
+      className={`absolute top-0 right-0 h-screen w-screen overflow-hidden ${
+        show ? '' : '-z-50'
+      }`}
     >
       <Backdrop className={show ? 'md:opacity-0' : 'opacity-100'} />
       <aside

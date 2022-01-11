@@ -14,7 +14,7 @@ interface NonLinkButton {
 }
 
 interface CommonProps {
-  children: React.ReactNode | string;
+  children: React.ReactNode;
   className?: string;
   isLink?: boolean;
   disabled?: boolean;
