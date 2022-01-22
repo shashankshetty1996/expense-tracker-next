@@ -1,12 +1,8 @@
 import { formatCurrency } from '../../../utilities/helpers/utils';
 
-interface IKPICard {
-  title: string;
-  amount: number;
-  type?: 'credit' | 'debit';
-}
+import { ITransactionSummary } from '../../../utilities/interfaces';
 
-function KPICard(props: IKPICard) {
+function TransactionSummary(props: ITransactionSummary) {
   const { title, amount, type = 'debit' } = props;
 
   const currency = formatCurrency(amount);
@@ -25,4 +21,4 @@ function KPICard(props: IKPICard) {
   );
 }
 
-export default KPICard;
+export default TransactionSummary;

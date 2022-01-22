@@ -8,8 +8,8 @@ interface LinkButton {
 }
 
 interface NonLinkButton {
-  isLink: never;
-  to: never;
+  isLink?: never;
+  to?: never;
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {};
 }
 
@@ -20,6 +20,7 @@ interface CommonProps {
   disabled?: boolean;
 }
 
+// type IButton = NonLinkButton & CommonProps;
 type IButton = (LinkButton | NonLinkButton) & CommonProps;
 
 const commonClassName = `inline-block px-4 py-2 rounded shadow-md text-white bg-teal-600 hover:bg-teal-800 dark:bg-slate-600 dark:hover:bg-slate-700`;

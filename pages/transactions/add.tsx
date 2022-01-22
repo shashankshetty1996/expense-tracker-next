@@ -8,7 +8,7 @@ import {
   ControlledInput,
   ControlledDropdown
 } from '../../modules/core';
-import { TransactionType } from '../../utilities/enums';
+import { TransactionType } from '../../utilities/helpers/enums';
 
 const transactionTypeOptions = [
   { label: 'Fixed Income', value: TransactionType.FIXED_INCOME },

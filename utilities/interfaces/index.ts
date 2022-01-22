@@ -1,1 +1,2 @@
-export * from './navbar';
+export * from './components/TransactionsEntry';
+export * from './components/Navbar';
