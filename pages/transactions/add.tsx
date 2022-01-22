@@ -1,7 +1,8 @@
+import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import { useForm } from 'react-hook-form';
 
-import { Navbar } from '../../modules/components';
+import { Navbar, TransactionSummary } from '../../modules/components';
 import {
   Button,
   FormElement,
@@ -9,6 +10,8 @@ import {
   ControlledDropdown
 } from '../../modules/core';
 import { TransactionType } from '../../utilities/helpers/enums';
+import { getPaymentMode } from '../../utilities/helpers/utils';
+import { ITransactions } from '../../utilities/interfaces';
 
 const transactionTypeOptions = [
   { label: 'Fixed Income', value: TransactionType.FIXED_INCOME },
@@ -42,7 +45,12 @@ const defaultValue = {
   [fields.note.key]: ''
 };
 
-export default function AddTransition() {
+interface IAddTransition {
+  transactions: ITransactions[];
+}
+
+export default function AddTransition(props: IAddTransition) {
+  const { transactions } = props;
   const {
     control,
     handleSubmit,
@@ -129,7 +137,46 @@ export default function AddTransition() {
             </Button>
           </FormElement>
         </form>
+
+        <section className="container mx-auto">
+          <h1 className="text-2xl md:text-4xl text-center text-teal-700 dark:text-slate-100 mt-4">
+            All Transactions
+            {transactions.map(transaction => {
+              const paymentMode = getPaymentMode(transaction.type);
+              return (
+                <div key={transaction.id}>
+                  <TransactionSummary
+                    title={transaction.note}
+                    amount={transaction.amount}
+                    type={paymentMode}
+                  />
+                </div>
+              );
+            })}
+          </h1>
+        </section>
       </main>
     </>
   );
 }
+
+export const getServerSideProps = async (): Promise<
+  GetStaticPropsResult<IAddTransition>
+> => {
+  const transactions = [];
+
+  try {
+    const response = await fetch('http://localhost:3000/api/transactions/');
+    const content = await response.json();
+    transactions.push(...content.data);
+  } catch (error) {
+    console.log(error.message);
+    console.log('Error while reading the file');
+  }
+
+  return {
+    props: {
+      transactions
+    }
+  };
+};

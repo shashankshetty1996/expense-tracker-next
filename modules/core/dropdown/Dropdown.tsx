@@ -1,4 +1,4 @@
-import { useRef, useState, forwardRef } from 'react';
+import { useRef, useState, forwardRef, KeyboardEvent } from 'react';
 import { Control, useController } from 'react-hook-form';
 import { useOutsideClick } from '../../../utilities/hooks';
 
@@ -31,10 +31,16 @@ function DropdownComp(props: DropdownProps, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   useOutsideClick(containerRef, closeDropdown, open);
 
-  const selectedOption = options.find(option => option.value === value) ?? {
-    label: '',
-    value: ''
-  };
+  const selectedOptionIndex = options.findIndex(
+    option => option.value === value
+  );
+  const selectedOption =
+    selectedOptionIndex !== -1
+      ? options[selectedOptionIndex]
+      : {
+          label: '',
+          value: ''
+        };
 
   const onItemSelect = (option: DropdownOption) => {
     if (open) {
@@ -49,6 +55,7 @@ function DropdownComp(props: DropdownProps, ref) {
         className="flex justify-between items-center rounded p-2 shadow-md bg-white dark:bg-stone-600"
         onClick={() => setOpen(c => !c)}
         ref={ref}
+        tabIndex={0}
       >
         <span className="text-base">{selectedOption.label}</span>
         <svg
@@ -75,14 +82,14 @@ function DropdownComp(props: DropdownProps, ref) {
             : 'opacity-0 h-0 translate-y-2 -z-10'
         }`}
       >
-        {options.map(option => {
+        {options.map((option, index) => {
           const isSelected = option.value === value;
+          const itemClassName = `p-2 cursor-pointer dark:text-slate-50 hover:text-white hover:bg-teal-700 dark:hover:bg-stone-700 
+          ${isSelected ? 'text-white bg-teal-600 dark:bg-stone-600' : ''}`;
           return (
             <li
               key={option.value}
-              className={`p-2 cursor-pointer dark:text-slate-50 hover:text-white hover:bg-teal-700 dark:hover:bg-stone-700 ${
-                isSelected ? 'text-white bg-teal-600 dark:bg-stone-600' : ''
-              }`}
+              className={itemClassName}
               onClick={() => onItemSelect(option)}
             >
               {option.label}

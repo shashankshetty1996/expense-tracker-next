@@ -13,7 +13,7 @@ export default function Home() {
             <TransactionSummary
               title="Total Balance"
               amount={100000}
-              type="debit"
+              type="debt"
             />
             <TransactionSummary
               title="Total Expenses"
@@ -26,7 +26,7 @@ export default function Home() {
             <TransactionSummary
               title="Total Balance"
               amount={100000}
-              type="debit"
+              type="debt"
             />
             <TransactionSummary
               title="Total Expenses"

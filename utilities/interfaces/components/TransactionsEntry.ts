@@ -1,5 +1,6 @@
+export type PaymentMode = 'credit' | 'debt';
 export interface ITransactionSummary {
-  title: string;
   amount: number;
-  type?: 'credit' | 'debit';
+  title?: string;
+  type?: PaymentMode;
 }
