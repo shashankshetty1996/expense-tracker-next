@@ -11,7 +11,7 @@ import {
 } from '../../modules/core';
 import { TransactionType } from '../../utilities/helpers/enums';
 import { getPaymentMode } from '../../utilities/helpers/utils';
-import { ITransactions } from '../../utilities/interfaces';
+import { ITransactions, SuccessResponse } from '../../utilities/interfaces';
 
 const transactionTypeOptions = [
   { label: 'Fixed Income', value: TransactionType.FIXED_INCOME },
@@ -160,23 +160,26 @@ export default function AddTransition(props: IAddTransition) {
   );
 }
 
-export const getServerSideProps = async (): Promise<
-  GetStaticPropsResult<IAddTransition>
-> => {
-  const transactions = [];
-
+export const getServerSideProps = async () => {
   try {
     const response = await fetch('http://localhost:3000/api/transactions/');
-    const content = await response.json();
-    transactions.push(...content.data);
-  } catch (error) {
-    console.log(error.message);
-    console.log('Error while reading the file');
-  }
+    const transactionsResponse: SuccessResponse<
+      ITransactions[]
+    > = await response.json();
 
-  return {
-    props: {
-      transactions
-    }
-  };
+    return {
+      props: {
+        transactions: transactionsResponse.data
+      }
+    };
+  } catch (error) {
+    console.log('Error while reading the file');
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    };
+  }
 };

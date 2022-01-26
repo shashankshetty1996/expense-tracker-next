@@ -1,14 +1,14 @@
 [
   { "id": 1, "owner": "shashank", "amount": 1000, "type": 4 },
   {
-    "id": 1,
+    "id": 2,
     "owner": "shashank",
     "amount": 145000,
     "type": 1,
     "note": "Side hassle"
   },
   {
-    "id": 1,
+    "id": 3,
     "owner": "shashank",
     "amount": 7500,
     "type": 4,
