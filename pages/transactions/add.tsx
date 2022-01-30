@@ -7,7 +7,8 @@ import {
   Button,
   FormElement,
   ControlledInput,
-  ControlledDropdown
+  ControlledDropdown,
+  ControlledDatePicker
 } from '../../modules/core';
 import { TransactionType } from '../../utilities/helpers/enums';
 import { getPaymentMode } from '../../utilities/helpers/utils';
@@ -21,7 +22,11 @@ const transactionTypeOptions = [
   { label: 'Variable Expense', value: TransactionType.VARIABLE_EXPENSE }
 ];
 
-const fields = {
+type Key = string;
+type Fields = {
+  [key: Key]: { key: Key; label: string; isRequired: boolean };
+};
+const fields: Fields = {
   amount: {
     key: 'amount',
     label: 'Amount',
@@ -32,6 +37,11 @@ const fields = {
     label: 'Type',
     isRequired: true
   },
+  date: {
+    key: 'date',
+    label: 'Transaction Date',
+    isRequired: true
+  },
   note: {
     key: 'note',
     label: 'Note',
@@ -39,10 +49,12 @@ const fields = {
   }
 };
 
-const defaultValue = {
+type DefaultValue = { [fieldKey: Key]: any };
+const defaultValue: DefaultValue = {
   [fields.amount.key]: 0,
   [fields.type.key]: TransactionType.VARIABLE_EXPENSE,
-  [fields.note.key]: ''
+  [fields.note.key]: '',
+  [fields.date.key]: new Date()
 };
 
 interface IAddTransition {
@@ -93,7 +105,7 @@ export default function AddTransition(props: IAddTransition) {
         <h1 className="text-2xl md:text-4xl text-center text-teal-700 dark:text-slate-100 mt-4">
           Add Transactions
         </h1>
-        <form className="flex flex-col md:flex-row justify-between items-center my-6 mx-4 md:mx-0">
+        <form className="flex flex-col md:flex-row justify-between items-center md:items-end my-6 mx-4 md:mx-0">
           <FormElement
             label={fields.amount.label}
             isRequired={fields.amount.isRequired}
@@ -118,6 +130,17 @@ export default function AddTransition(props: IAddTransition) {
               options={transactionTypeOptions}
               defaultValue={defaultValue[fields.type.key]}
               isRequired={fields.type.isRequired}
+            />
+          </FormElement>
+          <FormElement
+            label={fields.date.label}
+            isRequired={fields.date.isRequired}
+            error={errors[fields.date.key]?.message}
+          >
+            <ControlledDatePicker
+              name={fields.date.key}
+              control={control}
+              defaultValue={defaultValue[fields.date.key]}
             />
           </FormElement>
           <FormElement
@@ -160,6 +183,7 @@ export default function AddTransition(props: IAddTransition) {
   );
 }
 
+// TODO; This is temp... we'll setup whole backend info and flow it.
 export const getServerSideProps = async () => {
   try {
     const response = await fetch('http://localhost:3000/api/transactions/');
